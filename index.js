@@ -12,7 +12,7 @@ let teamUrl = null;
 
 function showUsage() {
     console.log('------------------------');
-    console.log('USAGE', 'git-vs', 'ui|new|pulls|work|queries');
+    console.log('USAGE', 'git-vs', 'ui|newpr|pulls|work|queries');
     console.log('Install as git alias with:  git config --global alias.vs "!git-vs" ');
     console.log('------------------------');
     process.exit(1);
@@ -78,7 +78,9 @@ let verb = process.argv[2].toLowerCase();
 getVsUrls().then(urls => {
     switch (verb)
     {
+        case 'pr':
         case 'new':
+        case 'newpr':
             createNewPr(urls.fetchUrl);
             break;
         case 'ui':
