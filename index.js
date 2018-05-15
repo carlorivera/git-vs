@@ -6,9 +6,30 @@ const url = require('url');
 const path = require('path');
 const opn = require("opn");
 let gitP = require('simple-git/promise');
+const cmd = require('cmd-executor');
+const git = require('cmd-executor').git
 let branch = null;
 let fetchUrl = null;
 let teamUrl = null;
+
+;(async () => {
+ 
+    // any attributes/functions/parameters you call on `cmd` will be parsed
+    // into a command string and executed. For example:
+   
+    // will call `touch a.txt`
+    //await cmd.touch('a.txt')
+  
+    //let status = await cmd.git('status')
+    let status = await git.branch("-vv");
+    console.log(status);
+
+})();
+return;
+
+
+
+
 
 function showUsage() {
     console.log('------------------------');
@@ -66,12 +87,33 @@ function getVsUrls() {
         });
 }
 
+function pruneCompleted() {
+
+    //git remote prune origin; git branch -vv | where {$_ -match '\[origin/.*: gone\]'} | foreach {git branch -D ($_.split(" ", [StringSplitOptions]'RemoveEmptyEntries')[0])}
+
+    gitP().raw(
+        [
+            "remote",
+            "prune",
+            "origin"
+            //, "--dry-run"
+        ]).then(() => {
+           gitP().branch("-vv").then(data => {
+               console.log(data);
+           });
+        });
+}
+
 // *******************************************************************
 // Main
 // *******************************************************************
 if (process.argv.length < 3) {
     showUsage();
 }
+
+//pruneCompleted();
+
+return;
 
 let verb = process.argv[2].toLowerCase();
 
