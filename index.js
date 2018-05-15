@@ -31,7 +31,7 @@ function createNewPr(fetchUrl)
         })
         .then(() => {
             let uriNewPR = fetchUrl + "/pullrequestcreate?sourceRef=" + branch + "&targetRef=master";
-            console.log("Opening Pull Request UI.\n" + uriNewPR);
+            console.log("Opening Pull Request UI.");
             openWrapper(uriNewPR);
         });
 }
@@ -50,11 +50,16 @@ let verb = process.argv[2].toLowerCase();
 gitP().getRemotes(true)
     .then(remotes =>  {
         let origin = remotes.filter(r => r.name === 'origin')[0];
+        
         if (!origin) {
             return Promise.reject('Cannot find remote origin');
         }
         
         fetchUrl =  origin.refs.fetch;
+        if (fetchUrl.indexOf("visualstudio") === -1) {
+            return Promise.reject("Origin is not a visual studio domain... FetchUrl = " + fetchUrl);
+        }
+
         teamUrl = fetchUrl.replace(/_git\/.*/, "");
 
         switch (verb)
