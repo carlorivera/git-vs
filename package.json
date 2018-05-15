@@ -1,0 +1,23 @@
+{
+  "author": {
+    "name": "Carlo Rivera"
+  },
+  "bin": {
+    "git-vs": "./index.js"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "opn": "^5.2.0",
+    "request": "^2.79.0",
+    "simple-git": "^1.65.0"
+  },
+  "deprecated": false,
+  "description": "CLI for creating and viewing Pull Requests in VSTS as well as other tasks.",
+  "main": "index.js",
+  "name": "git-vs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
