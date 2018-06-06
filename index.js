@@ -12,6 +12,7 @@ let teamUrl = null;
 
 function showUsage() {
     console.log('------------------------');
+    console.log('Command Line Interface for creating and viewing Pull Requests in VSTS.');
     console.log('USAGE', 'git-vs', 'ui|newpr|pulls|work|queries');
     console.log('Install as git alias with:  git config --global alias.vs "!git-vs" ');
     console.log('------------------------');
