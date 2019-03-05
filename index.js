@@ -32,7 +32,7 @@ function createNewPr(fetchUrl)
             return gitP().push('origin', status.current, {'--set-upstream': null }); 
         })
         .then(() => {
-            let uriNewPR = fetchUrl + "/pullrequestcreate?sourceRef=" + branch + "&targetRef=master";
+            let uriNewPR = fetchUrl + "/pullrequestcreate?sourceRef=" + branch;
             console.log("Opening Pull Request UI.");
             openWrapper(uriNewPR);
         });
@@ -54,16 +54,24 @@ function getVsUrls() {
             }
             
             fetchUrl =  origin.refs.fetch;
-            if (fetchUrl.indexOf("visualstudio") === -1) {
-                return Promise.reject("Origin is not a visual studio domain... FetchUrl = " + fetchUrl);
+            if (fetchUrl.indexOf("visualstudio") > 0) {
+                teamUrl = fetchUrl.replace(/_git\/.*/, "");
+                return Promise.resolve(
+                    {
+                        "teamUrl": teamUrl,
+                        "fetchUrl": fetchUrl
+                    });
+            } else if (fetchUrl.indexOf("dev.azure.com") > 0) {
+                fetchUrl = fetchUrl.replace(/.*@/, "https://")
+                teamUrl = fetchUrl.replace(/_git\/.*/, "");
+                return Promise.resolve(
+                    {
+                        "teamUrl": teamUrl,
+                        "fetchUrl": fetchUrl
+                    });
             }
 
-            teamUrl = fetchUrl.replace(/_git\/.*/, "");
-            return Promise.resolve(
-                {
-                    "teamUrl": teamUrl,
-                    "fetchUrl": fetchUrl
-                });
+            return Promise.reject("Origin is not a visual studio domain or azure dev ops domain... FetchUrl = " + fetchUrl);
         });
 }
 
